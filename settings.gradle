@@ -1,0 +1,3 @@
+include ':cibrary'
+include ':app'
+rootProject.name = "C_Library"
