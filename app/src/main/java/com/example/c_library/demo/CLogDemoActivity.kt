@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.c_library.R
-import org.chen.cibrary.log.CLog
+import org.chen.cibrary.log.ChLog
+import org.chen.cibrary.log.ChLogConfig
+import org.chen.cibrary.log.ChLogType
 
 class CLogDemoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +16,18 @@ class CLogDemoActivity : AppCompatActivity() {
     }
 
     private fun printLog(){
-        CLog.a("9900")
+        //自定义Log
+        ChLog.log(object : ChLogConfig(){
+
+            override fun includeThread(): Boolean {
+                return true
+            }
+
+            override fun stackTraceDepth(): Int {
+                return 0
+            }
+
+        },ChLogType.E,"----","5566")
+        ChLog.a("9900")
     }
 }

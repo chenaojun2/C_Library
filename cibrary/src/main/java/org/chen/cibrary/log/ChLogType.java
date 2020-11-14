@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * @author 陈澳军
  */
-public class CLogType {
+public class ChLogType {
 
     @IntDef({V,D,I,W,E,A})
     @Retention(RetentionPolicy.SOURCE)
