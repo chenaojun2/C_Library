@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">C_Library</string>
+    
+    <string name="if_home">&#xe8c6;</string>
 </resources>
