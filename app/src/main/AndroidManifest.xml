@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.C_Library">
-        <activity android:name=".demo.CLogDemoActivity"></activity>
+        <activity android:name=".demo.ChTabBottomDemoActivity"></activity>
+        <activity android:name=".demo.CLogDemoActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
