@@ -120,7 +120,7 @@ public class ChTabBottomLayout extends FrameLayout implements IChTabLayout<ChTab
 
         addBottomLine();
         addView(ll,flParams);
-
+        fixContentView();
     }
 
     private void addBottomLine(){
@@ -166,7 +166,7 @@ public class ChTabBottomLayout extends FrameLayout implements IChTabLayout<ChTab
         if(targetView == null){
             targetView = ChViewUtil.findTypeView(rootView, AbsListView.class);
         }
-        if(targetView == null){
+        if(targetView != null){
             targetView.setPadding(0,0,0,ChDisplayUtil.dp2px(tabBottomHeight,getResources()));
             targetView.setClipToPadding(false);
         }

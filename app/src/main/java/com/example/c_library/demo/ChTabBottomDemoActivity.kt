@@ -1,11 +1,14 @@
 package com.example.c_library.demo
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.example.c_library.R
 import org.chen.chui.tab.bottom.ChTabBottomInfo
 import org.chen.chui.tab.bottom.ChTabBottomLayout
+import org.chen.cibrary.util.ChDisplayUtil
 
 class ChTabBottomDemoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,21 +38,22 @@ class ChTabBottomDemoActivity : AppCompatActivity() {
             "#ffd44949"
         )
 
-        val infoCategory = ChTabBottomInfo(
-            "分类",
-            "fonts/iconfont.ttf",
-            getString(R.string.if_category),
-            null,
-            "#ff656667",
-            "#ffd44949"
-        )
+//        val infoCategory = ChTabBottomInfo(
+//            "分类",
+//            "fonts/iconfont.ttf",
+//            getString(R.string.if_category),
+//            null,
+//            "#ff656667",
+//            "#ffd44949"
+//        )
 //        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.fire, null)
 
-//        val infoCategory = HiTabBottomInfo<String>(
-//            "分类",
-//            bitmap,
-//            bitmap
-//        )
+        val bitmap = BitmapFactory.decodeResource(resources,R.drawable.fire,null);
+        val infoCategory = ChTabBottomInfo<String>(
+            "分类",
+            bitmap,
+            bitmap
+        )
         val infoChat = ChTabBottomInfo(
             "推荐",
             "fonts/iconfont.ttf",
@@ -77,5 +81,8 @@ class ChTabBottomDemoActivity : AppCompatActivity() {
             Toast.makeText(this@ChTabBottomDemoActivity,nextInfo.name,Toast.LENGTH_LONG).show()
         }
         chTabBottomLayout.defaultSelected(homeInfo)
+        //改变某个tab的高度
+        val tabBottom = chTabBottomLayout.findTab(bottomInfoList[2])
+        tabBottom?.apply { resetHeight(ChDisplayUtil.dp2px(66f,resources)) }
     }
 }

@@ -93,7 +93,7 @@ public class ChTabBottom extends RelativeLayout implements IChTab<ChTabBottomInf
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
         layoutParams.height = height;
         setLayoutParams(layoutParams);
-        getTabImageView().setVisibility(GONE);
+        getTabNameView().setVisibility(GONE);
     }
 
     @Override
