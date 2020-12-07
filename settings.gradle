@@ -1,4 +1,4 @@
-include ':chui'
+
 include ':clibrary'
 include ':app'
 rootProject.name = "C_Library"

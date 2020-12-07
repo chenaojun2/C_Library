@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.example.c_library.demo.CLogDemoActivity
-import com.example.c_library.demo.ChTabBottomDemoActivity
-import org.chen.chui.tab.bottom.ChTabBottom
-import org.chen.chui.tab.bottom.ChTabBottomInfo
 
 /**
  *
@@ -26,9 +23,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
             R.id.tv_Clog->{
                 startActivity(Intent(this,CLogDemoActivity::class.java))
             }
-            R.id.tv_tab_Bottom->{
-                startActivity(Intent(this,ChTabBottomDemoActivity::class.java))
-            }
+
         }
     }
 }
