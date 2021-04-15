@@ -11,7 +11,7 @@ open class ChRequest {
     var parameters: MutableMap<String, Any>? = null
     var domainUrl: String? = null
     var relativeUrl: String? = null
-    var retuenType: Type? = null
+    var returnType: Type? = null
 
     @IntDef(value = [METHOD.GET, METHOD.POST])
     internal annotation class METHOD {

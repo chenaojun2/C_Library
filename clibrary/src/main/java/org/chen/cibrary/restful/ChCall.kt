@@ -7,7 +7,7 @@ interface ChCall<T> {
     @Throws(IOException::class)
     fun execute():ChResponse<T>
 
-    fun enqueue(callback: ChCall<T>)
+    fun enqueue(callback: ChCallBack<T>)
 
     interface Factory{
         fun newCall(request:ChRequest) :ChCall<*>

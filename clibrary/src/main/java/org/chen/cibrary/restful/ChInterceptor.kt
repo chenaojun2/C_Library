@@ -17,7 +17,7 @@ interface ChInterceptor {
         /**
          * response对象 在网络发起之前， 是为空的
          * */
-        fun response(): ChResponse<*>
+        fun response(): ChResponse<*>?
     }
 
 }
