@@ -10,7 +10,7 @@ interface ChCall<T> {
     fun enqueue(callback: ChCallBack<T>)
 
     interface Factory{
-        fun newCall(request:ChRequest) :ChCall<*>
+        fun newCall(request:ChRequest) :ChCall<Any>
     }
 
 }

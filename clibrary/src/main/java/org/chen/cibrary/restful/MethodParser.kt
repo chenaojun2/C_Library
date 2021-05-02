@@ -11,20 +11,20 @@ import java.lang.reflect.Method
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
-class MethodParser(val baseUrl: String, method: Method, args: Array<Any>) {
+class MethodParser(val baseUrl: String, method: Method) {
 
-    private lateinit var domainUrl: String
+    private var domainUrl: String?=null
     private var formPost: Boolean = true
     private var httpMethod: Int = 0
     private lateinit var relativeUrl: String
     private var returnType: Type? = null
     private var headers: MutableMap<String, String> = mutableMapOf()
-    private var parameters: MutableMap<String, Any> = mutableMapOf()
+    private var parameters: MutableMap<String, String> = mutableMapOf()
 
     init {
         parseMethodAnnotations(method)
 
-        parseMethodParameters(method, args)
+        //parseMethodParameters(method, args)
 
         parseMethodReturnType(method)
     }
@@ -59,10 +59,10 @@ class MethodParser(val baseUrl: String, method: Method, args: Array<Any>) {
             } else {
                 throw IllegalStateException("cannot handle method annotation:" + annotation.javaClass.toString())
             }
+        }
 
-            require(!(httpMethod != ChRequest.METHOD.GET) && !(httpMethod != ChRequest.METHOD.POST)) {
-                String.format("method %s must has one of GET,POST ", method.name)
-            }
+        require((httpMethod == ChRequest.METHOD.GET) || (httpMethod == ChRequest.METHOD.POST)) {
+            String.format("method %s must has one of GET,POST ", method.name)
         }
 
         if (domainUrl == null) {
@@ -93,7 +93,7 @@ class MethodParser(val baseUrl: String, method: Method, args: Array<Any>) {
             if (annotation is Filed) {
                 val key = annotation.value
                 val value = args[index]
-                parameters[key] = value
+                parameters[key] = value.toString()
             } else if (annotation is Path) {
                 val replaceName = annotation.value
                 val replacement = value.toString()
@@ -128,7 +128,7 @@ class MethodParser(val baseUrl: String, method: Method, args: Array<Any>) {
     }
 
     private fun parseMethodReturnType(method: Method) {
-        if (method.returnType != ChCall::class) {
+        if (method.returnType != ChCall::class.java) {
             throw IllegalStateException(
                 String.format(
                     "method %s must be type of ChCall.class",
@@ -152,6 +152,21 @@ class MethodParser(val baseUrl: String, method: Method, args: Array<Any>) {
 
     }
 
+    fun newRequest(method: Method, args: Array<out Any>?): ChRequest {
+        val arguments: Array<Any> = args as Array<Any>? ?: arrayOf()
+        parseMethodParameters(method, arguments)
+
+        val request = ChRequest()
+        request.domainUrl = domainUrl
+        request.returnType = returnType
+        request.relativeUrl = relativeUrl
+        request.parameters = parameters
+        request.headers = headers
+        request.httpMethod = httpMethod
+        request.fromPost = formPost
+        return request
+    }
+
     fun newRequest(): ChRequest {
         var request = ChRequest()
         request.domainUrl = domainUrl
@@ -160,12 +175,13 @@ class MethodParser(val baseUrl: String, method: Method, args: Array<Any>) {
         request.parameters = parameters
         request.headers = headers
         request.httpMethod = httpMethod
+        request.fromPost = formPost
         return request
     }
 
     companion object {
-        fun parse(baseUrl: String, method: Method, args: Array<Any>): MethodParser {
-            return MethodParser(baseUrl, method, args)
+        fun parse(baseUrl: String, method: Method): MethodParser {
+            return MethodParser(baseUrl, method)
         }
     }
 

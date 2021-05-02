@@ -1,5 +1,6 @@
 package org.chen.cibrary.restful
 
+import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 import java.util.concurrent.ConcurrentHashMap
@@ -21,19 +22,20 @@ class ChRestful constructor(val baseUrl: String, val callFactory: ChCall.Factory
     fun <T> create(service: Class<T>): T {
         return Proxy.newProxyInstance(
             service.classLoader,
-            arrayOf<Class<*>>(service)
-        ) { proxy, method, args ->
+            arrayOf<Class<*>>(service), object : InvocationHandler {
+                override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any {
+                    var methodParser = methodService.get(method)
+                    if (methodParser == null) {
+                        methodParser = MethodParser.parse(baseUrl, method)
+                        methodService.put(method, methodParser)
+                    }
 
-            var methodParser = methodService.get(method)
-            if (methodParser == null) {
-                methodParser = MethodParser.parse(baseUrl, method, args)
-                methodService.put(method, methodParser)
+                    val request = methodParser.newRequest(method,args)
+                    return scheduler.newCall(request)
+                }
+
             }
-
-            val request = methodParser.newRequest()
-            scheduler.newCall(request)
-
-        } as T
+        ) as T
     }
 
 }
